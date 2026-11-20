@@ -110,6 +110,15 @@ function bareKuldegrader(tall) {
 //     Returner en NY array, ikke endre den opprinnelige.
 function sorterStigende(tall) {
   // LØSNING
+  let sorted = [...tall]; // Lag en kopi av arrayen
+  for (let i = 0; i < sorted.length - 1; i++) {
+    for (let j = 0; j < sorted.length - 1 - i; j++) {
+      if (sorted[j] > sorted[j + 1]) {
+        [sorted[j], sorted[j + 1]] = [sorted[j + 1], sorted[j]];
+      }
+    }
+  }
+  return sorted;
 }
 
 
@@ -128,6 +137,7 @@ const runder = [120, 85, 140, 95, 110];
 //     lagGamertag("Ola", 99) -> "Ola99"
 function lagGamertag(navn, tall) {
   // LØSNING
+  return navn + tall;
 }
 
 
@@ -137,6 +147,7 @@ function lagGamertag(navn, tall) {
 //     Tips: return alder >= grense;  (sammenligningen gir true/false)
 function erGammelNok(alder, grense) {
   // LØSNING
+  return alder >= grense;
 }
 
 // Oppgave 12: BreiLAN innfører billettpriser. VG1 betaler 100 kr og resten av skolen 150 kr.
@@ -146,6 +157,11 @@ function erGammelNok(alder, grense) {
 //     Tips: bruk if og else.
 function billettpris(erVG1) {
   // LØSNING
+  if (erVG1) {
+    return 100;
+  } else {
+    return 150;
+  }
 }
 
 
@@ -163,6 +179,14 @@ function billettpris(erVG1) {
 //     Tips: andel = antall i valgt fraksjon / totalt * 100
 function velgFraksjon(alliance, horde, valg) {
   // LØSNING
+  const totalt = alliance + horde;
+  const andel = valg === "Alliance" ? (alliance / totalt) * 100 : (horde / totalt) * 100;
+
+  if (andel > 50) {
+    return "The faction is currently unavailable on this ruleset due to population imbalance";
+  } else {
+    return `Welcome to the ${valg}!`;
+  }
 }
 
 // Oppgave 14: Hvor mange runder fikk laget MER enn grensen?
@@ -170,6 +194,13 @@ function velgFraksjon(alliance, horde, valg) {
 //     Tips: samme oppskrift som antallUnderNull() i oppgave 6.
 function antallOver(poeng, grense) {
   // LØSNING
+  let count = 0;
+  for (let i = 0; i < poeng.length; i++) {
+    if (poeng[i] > grense) {
+      count++;
+    }
+  }
+  return count;
 }
 
 
@@ -222,6 +253,8 @@ const resultater = [
 //     kanDelta(16, "Fortnite") -> true
 function kanDelta(alder, spill) {
   // LØSNING
+  const grense = aldersgrenser[spill];
+  return erGammelNok(alder, grense);
 }
 
 
@@ -232,6 +265,11 @@ function kanDelta(alder, spill) {
 //     totalInntekt(deltakere) -> 700
 function totalInntekt(deltakere) {
   // LØSNING
+  let total = 0;
+  for (let i = 0; i < deltakere.length; i++) {
+    total += billettpris(deltakere[i].vg1);
+  }
+  return total;
 }
 
 
@@ -243,6 +281,27 @@ function totalInntekt(deltakere) {
 //     toppTre(resultater) -> ["Kari", "Jonas", "Ali"]
 function toppTre(resultater) {
   // LØSNING
+  const treBeste = [];
+  const resultaterKopi = [...resultater];
+
+  for (let i = 0; i < 3; i++) {
+    let maksPoeng = -Infinity;
+    let maksIndex = -1;
+
+    for (let j = 0; j < resultaterKopi.length; j++) {
+      if (resultaterKopi[j].poeng > maksPoeng) {
+        maksPoeng = resultaterKopi[j].poeng;
+        maksIndex = j;
+      }
+    }
+
+    if (maksIndex !== -1) {
+      treBeste.push(resultaterKopi[maksIndex].navn);
+      resultaterKopi.splice(maksIndex, 1);
+    }
+  }
+
+  return treBeste;
 }
 
 
